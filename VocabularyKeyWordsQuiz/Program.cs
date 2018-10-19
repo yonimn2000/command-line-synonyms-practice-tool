@@ -6,7 +6,7 @@ namespace VocabularyKeyWordsQuiz
 {
     class Program
     {
-        static List<string[]> myWords = new List<string[]>();
+        static List<Keyword> myKeyWords = new List<Keyword>();
         static Random randomWrongWord = new Random();
         static Random randomWrongKeyword = new Random();
         static void Main(string[] args)
@@ -17,33 +17,27 @@ namespace VocabularyKeyWordsQuiz
 
         static void Test()
         {
-            ShuffleList(myWords);
-            for (int i = 0; i < myWords.Count; i++) // Test for every keyword
+            for (int keywordIndex = 0; keywordIndex < myKeyWords.Count; keywordIndex++) // Test for every keyword
             {
-                int wrongKeywordIndex = randomWrongKeyword.Next(myWords.Count);
-                while (wrongKeywordIndex == i) // If the picked keyword the same as the tested keyword,
-                    wrongKeywordIndex = randomWrongKeyword.Next(myWords.Count); // choose a different one.
-                Console.WriteLine($"Question {i + 1} of {myWords.Count}:");
+                int wrongKeywordIndex = 0;
+                do wrongKeywordIndex = randomWrongKeyword.Next(myKeyWords.Count); // If the picked keyword the same as the tested keyword, choose a different one.
+                while (wrongKeywordIndex == keywordIndex || myKeyWords[keywordIndex].partOfSpeech != myKeyWords[wrongKeywordIndex].partOfSpeech);
+                Console.WriteLine($"Question {keywordIndex + 1} of {myKeyWords.Count}:");
                 Console.WriteLine("Which word does not belong in the list:");
                 Console.WriteLine();
-                Console.WriteLine("Key word: " + myWords[i][0]);
+                Console.WriteLine("Keyword: " + myKeyWords[keywordIndex].keyword);
                 Console.WriteLine();
-                int WrongWordIndex = randomWrongWord.Next(1, myWords[i].Length);
-                for (int j = 1; j < myWords[i].Length; j++)
-                {
-                    Console.Write($"{j}: ");
-                    if (j == WrongWordIndex)
-                        Console.WriteLine(myWords[wrongKeywordIndex][WrongWordIndex]);
-                    else
-                        Console.WriteLine(myWords[i][j]);
-                }
+                int wrongWordIndex = randomWrongWord.Next(myKeyWords[keywordIndex].words.Count);
+                List<string> wordListToShow = myKeyWords[keywordIndex].words;
+                wordListToShow.Insert(wrongWordIndex, myKeyWords[wrongKeywordIndex].words[wrongWordIndex]);
+                for (int wordIndex = 0; wordIndex < wordListToShow.Count; wordIndex++)
+                    Console.WriteLine($"{wordIndex + 1}: {wordListToShow[wordIndex]}");
                 Console.WriteLine();
-                if (int.Parse(Console.ReadLine()) == WrongWordIndex)
+                if (int.Parse(Console.ReadLine()) == wrongWordIndex + 1)
                     Console.WriteLine("Correct");
                 else
-                    Console.WriteLine($"Wrong. It is #{WrongWordIndex}.");
-                Console.WriteLine($"'{myWords[wrongKeywordIndex][WrongWordIndex]}' means '{myWords[wrongKeywordIndex][0]}'.");
-                Console.WriteLine($"The missing word is '{myWords[i][WrongWordIndex]}'.");
+                    Console.WriteLine($"Wrong. It is #{wrongWordIndex + 1}.");
+                Console.WriteLine($"'{myKeyWords[wrongKeywordIndex].words[wrongWordIndex]}' means '{myKeyWords[wrongKeywordIndex].keyword}'.");
                 Console.WriteLine();
                 Console.WriteLine("Press any key to continue...");
                 Console.ReadKey();
@@ -52,22 +46,29 @@ namespace VocabularyKeyWordsQuiz
         }
 
         static Random randomShuffle = new Random();
-        static void ShuffleList(List<string[]> list)
-        {
-            for (int i = 0; i < list.Count - 1; i++)
-            {
-                int k = randomShuffle.Next(i, list.Count);
-                string[] value = list[k];
-                list[k] = list[i];
-                list[i] = value;
-            }
-        }
-
         static void ReadFile(string path)
         {
             string[] lines = File.ReadAllLines(path);
             foreach (string line in lines)
-                myWords.Add(line.Split(','));
+            {
+                string[] words = line.Split(',');
+                List<string> wordList = new List<string>();
+                for (int i = 2; i < words.Length; i++)
+                    wordList.Insert(randomShuffle.Next(wordList.Count), words[i]);
+                myKeyWords.Insert(randomShuffle.Next(myKeyWords.Count), new Keyword(words[0], words[1], wordList));
+            }
+        }
+    }
+    public struct Keyword
+    {
+        public string keyword;
+        public string partOfSpeech;
+        public List<string> words;
+        public Keyword(string newkeyword, string newpartOfSpeech, List<string> newwords)
+        {
+            keyword = newkeyword;
+            partOfSpeech = newpartOfSpeech;
+            words = newwords;
         }
     }
 }
