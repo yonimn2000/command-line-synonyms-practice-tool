@@ -17,6 +17,7 @@ namespace VocabularyKeyWordsQuiz
 
         static void Test()
         {
+            int wrongAnswerCount = 0;
             for (int keywordIndex = 0; keywordIndex < myKeyWords.Count; keywordIndex++) // Test for every keyword
             {
                 int wrongKeywordIndex = 0;
@@ -28,21 +29,30 @@ namespace VocabularyKeyWordsQuiz
                 Console.WriteLine("Keyword: " + myKeyWords[keywordIndex].keyword);
                 Console.WriteLine();
                 int wrongWordIndex = randomWrongWord.Next(myKeyWords[keywordIndex].words.Count);
-                List<string> wordListToShow = myKeyWords[keywordIndex].words;
+                List<string> wordListToShow = new List<string>();
+                wordListToShow.AddRange(myKeyWords[keywordIndex].words);
                 wordListToShow.Insert(wrongWordIndex, myKeyWords[wrongKeywordIndex].words[wrongWordIndex]);
                 for (int wordIndex = 0; wordIndex < wordListToShow.Count; wordIndex++)
                     Console.WriteLine($"{wordIndex + 1}: {wordListToShow[wordIndex]}");
                 Console.WriteLine();
-                if (int.Parse(Console.ReadLine()) == wrongWordIndex + 1)
+                int input = -1;
+                while (!int.TryParse(Console.ReadLine(), out input) || input <= 0 || input > wordListToShow.Count)
+                    Console.WriteLine("Bad input... Try again:");
+                if (input == wrongWordIndex + 1)
                     Console.WriteLine("Correct");
                 else
+                {
                     Console.WriteLine($"Wrong. It is #{wrongWordIndex + 1}.");
+                    wrongAnswerCount++;
+                }
                 Console.WriteLine($"'{myKeyWords[wrongKeywordIndex].words[wrongWordIndex]}' means '{myKeyWords[wrongKeywordIndex].keyword}'.");
                 Console.WriteLine();
                 Console.WriteLine("Press any key to continue...");
                 Console.ReadKey();
                 Console.Clear();
             }
+            Console.WriteLine($"You answered correctly on {myKeyWords.Count-wrongAnswerCount} out of {myKeyWords.Count} questions. ({(myKeyWords.Count - wrongAnswerCount)*100/ myKeyWords.Count}%)");
+            Console.ReadKey();
         }
 
         static Random randomShuffle = new Random();
@@ -54,7 +64,7 @@ namespace VocabularyKeyWordsQuiz
                 string[] words = line.Split(',');
                 List<string> wordList = new List<string>();
                 for (int i = 2; i < words.Length; i++)
-                    wordList.Insert(randomShuffle.Next(wordList.Count), words[i]);
+                    wordList.Add(words[i]);
                 myKeyWords.Insert(randomShuffle.Next(myKeyWords.Count), new Keyword(words[0], words[1], wordList));
             }
         }
