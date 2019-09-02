@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{46B3E83A-3736-4C73-81E8-6C4A8F817FFB}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>VocabularyKeyWordsQuiz</RootNamespace>
-    <AssemblyName>VocabularyKeyWordsQuiz</AssemblyName>
+    <RootNamespace>YonatanMankovich.VocabularySynonymsPractice</RootNamespace>
+    <AssemblyName>YonatanMankovich.VocabularySynonymsPractice</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
