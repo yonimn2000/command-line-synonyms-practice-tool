@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29209.62
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VocabularySynonymsPractice", "VocabularySynonymsPractice\VocabularySynonymsPractice.csproj", "{46B3E83A-3736-4C73-81E8-6C4A8F817FFB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SynonymsPractice", "SynonymsPractice\SynonymsPractice.csproj", "{46B3E83A-3736-4C73-81E8-6C4A8F817FFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
