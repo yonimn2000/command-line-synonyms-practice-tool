@@ -8,10 +8,6 @@ A simple command line synonyms practice tool.
 
 ![Wrong Answer Screenshot](media/screenshot2.png)
 
-## Dependency
-
-[YonatanMankovich.SimpleConsoleMenus](https://github.com/yonimn2000/simple-console-menus)
-
 ## How to Add Words
 
 1. Create a file named `WordsList.txt` in the same folder as the executable file.
